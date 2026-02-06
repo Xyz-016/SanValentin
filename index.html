@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>San Valentín 💘</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 320px;
+    }
+
+    p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 5px;
+      transition: all 0.3s ease;
+    }
+
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    #noBtn {
+      background: #ccc;
+    }
+
+    #msg {
+      margin-top: 15px;
+      font-style: italic;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <h1>Hola Nahomi 💌</h1>
+    <p><strong>Tu novio tiene una pregunta…</strong></p>
+    <p><strong>¿Quieres ser mi San Valentín?</strong></p>
+
+    <div class="buttons">
+      <button id="yesBtn">Sí 💖</button>
+      <button id="noBtn">No 😔</button>
+    </div>
+
+    <div id="msg"></div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const msg = document.getElementById("msg");
+    const card = document.getElementById("card");
+
+    let size = 1;
+    let index = 0;
+
+    const messages = [
+      "¿Segura amor?",
+      "¿Ni un quizá? 🥺",
+      "Ándale di que sí",
+      "El sí se ve mejor amor",
+      "No te hagas",
+      "Ya sabes que quieres 😌",
+      "Última oportunidad eh"
+    ];
+
+    noBtn.addEventListener("click", () => {
+      size += 0.2;
+      yesBtn.style.transform = `scale(${size})`;
+      msg.textContent = messages[index % messages.length];
+      index++;
+    });
+
+    yesBtn.addEventListener("click", () => {
+      card.innerHTML = `
+        <h1>💖💖💖</h1>
+        <p style="font-size:18px;">
+          <strong>MUAKK 💋<br>
+          Te amo demasiado nena</strong>
+        </p>
+      `;
+    });
+  </script>
+
+</body>
+</html>
