@@ -103,6 +103,10 @@
       "porfisss"
     ];
 
+    // guardar posición original del SÍ
+    const yesOriginalLeft = yesBtn.offsetLeft;
+    const yesOriginalTop = yesBtn.offsetTop;
+
     noBtn.addEventListener("click", () => {
       // crecer sí
       yesSize += 0.25;
@@ -116,13 +120,21 @@
       msg.textContent = messages[index % messages.length];
       index++;
 
-      // cuando el no ya está mini → el sí toma su lugar
+      // intercambio de posiciones
       if (noSize <= 0.25 && !switched) {
         const noRect = noBtn.getBoundingClientRect();
         const parentRect = noBtn.parentElement.getBoundingClientRect();
 
-        yesBtn.style.left = `${noRect.left - parentRect.left}px`;
-        yesBtn.style.top = `${noRect.top - parentRect.top}px`;
+        const noX = noRect.left - parentRect.left;
+        const noY = noRect.top - parentRect.top;
+
+        // mover sí al lugar del no
+        yesBtn.style.left = `${noX}px`;
+        yesBtn.style.top = `${noY}px`;
+
+        // mover no al lugar original del sí
+        noBtn.style.left = `${yesOriginalLeft}px`;
+        noBtn.style.top = `${yesOriginalTop}px`;
 
         switched = true;
       }
