@@ -29,7 +29,9 @@
     }
 
     .buttons {
+      position: relative;
       margin-top: 20px;
+      height: 120px;
     }
 
     button {
@@ -38,17 +40,21 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      margin: 5px;
       transition: all 0.3s ease;
+      position: absolute;
     }
 
     #yesBtn {
       background: #ff4d6d;
       color: white;
+      left: 40px;
+      transform-origin: center;
     }
 
     #noBtn {
       background: #ccc;
+      right: 40px;
+      transform-origin: center;
     }
 
     #msg {
@@ -64,8 +70,10 @@
     <h1>Hola Nahomi 💌</h1>
     <p><strong>Tu novio tiene una pregunta…</strong></p>
     <p><strong>¿Quieres ser mi San Valentín?</strong></p>
-<img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGZ6bmxqemlrNjdsNW9nbG8xbXBvMm1mdXVsNDQ5OWFybDQzc3hoMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7k3ThwwMXnHCE/giphy.gif"
-    style="width:200px; margin-top:15px;">
+
+    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGZ6bmxqemlrNjdsNW9nbG8xbXBvMm1mdXVsNDQ5OWFybDQzc3hoMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7k3ThwwMXnHCE/giphy.gif"
+         style="width:200px; margin-top:15px;">
+
     <div class="buttons">
       <button id="yesBtn">Sí 💖</button>
       <button id="noBtn">No 😔</button>
@@ -80,8 +88,10 @@
     const msg = document.getElementById("msg");
     const card = document.getElementById("card");
 
-    let size = 1;
+    let yesSize = 1;
+    let noSize = 1;
     let index = 0;
+    let switched = false;
 
     const messages = [
       "¿Segura amor?",
@@ -93,19 +103,30 @@
       "porfisss"
     ];
 
-noBtn.addEventListener("click", () => {
-  size += 0.2;
-  yesBtn.style.transform = `scale(${size})`;
+    noBtn.addEventListener("click", () => {
+      // crecer sí
+      yesSize += 0.25;
+      yesBtn.style.transform = `scale(${yesSize})`;
 
-  const x = Math.random() * 150;
-  const y = Math.random() * 60;
+      // encoger no
+      noSize -= 0.15;
+      if (noSize < 0.2) noSize = 0.2;
+      noBtn.style.transform = `scale(${noSize})`;
 
-  noBtn.style.left = `${x}px`;
-  noBtn.style.top = `${y}px`;
+      msg.textContent = messages[index % messages.length];
+      index++;
 
-  msg.textContent = messages[index % messages.length];
-  index++;
-});
+      // cuando el no ya está mini → el sí toma su lugar
+      if (noSize <= 0.25 && !switched) {
+        const noRect = noBtn.getBoundingClientRect();
+        const parentRect = noBtn.parentElement.getBoundingClientRect();
+
+        yesBtn.style.left = `${noRect.left - parentRect.left}px`;
+        yesBtn.style.top = `${noRect.top - parentRect.top}px`;
+
+        switched = true;
+      }
+    });
 
     yesBtn.addEventListener("click", () => {
       card.innerHTML = `
@@ -114,11 +135,11 @@ noBtn.addEventListener("click", () => {
           <strong>MUAKK 💋<br>
           Te amo demasiado nena</strong>
         </p>
-<img src="https://media1.tenor.com/m/R5DEGk33-IoAAAAC/love.gif"
-     style="width:200px; margin-top:15px;">
-
+        <img src="https://media1.tenor.com/m/R5DEGk33-IoAAAAC/love.gif"
+             style="width:200px; margin-top:15px;">
       `;
     });
   </script>
+
 </body>
 </html>
