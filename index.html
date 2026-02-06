@@ -1,131 +1,124 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>San Valentín 💘</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-    }
-
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      width: 320px;
-      position: relative;
-    }
-
-    .buttons {
-      margin-top: 20px;
-      position: relative;
-      height: 60px;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: absolute;
-    }
-
-    #yesBtn {
-      background: #ff4d6d;
-      color: white;
-      left: 40px;
-    }
-
-    #noBtn {
-      background: #ccc;
-      right: 40px;
-    }
-
-    #msg {
-      margin-top: 15px;
-      font-style: italic;
-      color: #555;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>San Valentín 💘</title>
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0;
+}
+.card{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  width:320px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+.buttons{
+  position:relative;
+  height:70px;
+  margin-top:20px;
+}
+button{
+  position:absolute;
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+  transition:all .3s ease;
+}
+#yesBtn{
+  background:#ff4d6d;
+  color:white;
+  left:40px;
+}
+#noBtn{
+  background:#ccc;
+  left:180px;
+}
+#msg{
+  margin-top:15px;
+  font-style:italic;
+  color:#555;
+}
+</style>
 </head>
+
 <body>
+<div class="card" id="card">
+  <h1>Hola Nahomi 💌</h1>
+  <p><strong>¿Quieres ser mi San Valentín?</strong></p>
 
-  <div class="card" id="card">
-    <h1>Hola Nahomi 💌</h1>
-    <p><strong>¿Quieres ser mi San Valentín?</strong></p>
+  <img src="https://media4.giphy.com/media/7k3ThwwMXnHCE/giphy.gif"
+       style="width:200px;margin-top:15px;">
 
-    <img src="https://media4.giphy.com/media/7k3ThwwMXnHCE/giphy.gif"
-         style="width:200px; margin-top:15px;">
-
-    <div class="buttons">
-      <button id="yesBtn">Sí 💖</button>
-      <button id="noBtn">No 😔</button>
-    </div>
-
-    <div id="msg"></div>
+  <div class="buttons">
+    <button id="yesBtn">Sí 💖</button>
+    <button id="noBtn">No 😔</button>
   </div>
 
-  <script>
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const msg = document.getElementById("msg");
+  <div id="msg"></div>
+</div>
 
-    let yesSize = 1;
-    let noSize = 1;
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn  = document.getElementById("noBtn");
+const msg    = document.getElementById("msg");
 
-    // Guardamos posiciones originales
-    const yesOriginalLeft = yesBtn.style.left;
-    const noOriginalRight = noBtn.style.right;
+let clicks = 0;
+let yesScale = 1;
+let noScale = 1;
+let swapped = false;
 
-    const messages = [
-      "¿Segura amor?",
-      "Ándale di que sí 🥺",
-      "No te hagas",
-      "Pofishhh",
-      "Ya sabes que sí 😌"
-    ];
+const messages = [
+  "¿Segura amor?",
+  "Ándale di que sí 🥺",
+  "No te hagas",
+  "pofishh",
+  "Ya sabes que sí 😌"
+];
 
-    let index = 0;
+noBtn.addEventListener("click", () => {
+  clicks++;
 
-    noBtn.addEventListener("click", () => {
-      // Cambiar tamaños
-      yesSize += 0.15;
-      noSize -= 0.1;
+  // tamaños
+  yesScale += 0.15;
+  noScale -= 0.1;
+  if(noScale < 0.4) noScale = 0.4;
 
-      if (noSize < 0.4) noSize = 0.4;
+  yesBtn.style.transform = `scale(${yesScale})`;
+  noBtn.style.transform  = `scale(${noScale})`;
 
-      yesBtn.style.transform = `scale(${yesSize})`;
-      noBtn.style.transform = `scale(${noSize})`;
+  msg.textContent = messages[(clicks-1)%messages.length];
 
-      // Intercambiar posiciones EXACTAS
-      yesBtn.style.left = "unset";
-      yesBtn.style.right = noOriginalRight;
+  // swap real en el 4to click
+  if(clicks === 4 && !swapped){
+    swapped = true;
 
-      noBtn.style.right = "unset";
-      noBtn.style.left = yesOriginalLeft;
+    const yesX = yesBtn.offsetLeft;
+    const noX  = noBtn.offsetLeft;
 
-      msg.textContent = messages[index % messages.length];
-      index++;
-    });
+    yesBtn.style.left = noX + "px";
+    noBtn.style.left  = yesX + "px";
+  }
+});
 
-    yesBtn.addEventListener("click", () => {
-      document.getElementById("card").innerHTML = `
-        <h1>💖💖💖</h1>
-        <p><strong>MUAKKK <br>Te amo demasiado mi niña</strong></p>
-        <img src="https://media1.tenor.com/m/R5DEGk33-IoAAAAC/love.gif"
-             style="width:200px; margin-top:15px;">
-      `;
-    });
-  </script>
+yesBtn.addEventListener("click", () => {
+  document.getElementById("card").innerHTML = `
+    <h1>💖💖💖</h1>
+    <p><strong>MUAKKK <br>Te amo demasiado nena</strong></p>
+    <img src="https://media1.tenor.com/m/R5DEGk33-IoAAAAC/love.gif"
+         style="width:200px;margin-top:15px;">
+  `;
+});
+</script>
 </body>
 </html>
